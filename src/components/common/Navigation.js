@@ -3,28 +3,44 @@ import { Link } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import Col from 'react-bootstrap/Col';
 
 export default class Navigation extends Component {
-  render(){
-    const { location } = this.props;
+  render() {
+    const {location} = this.props;
     return (
-      <Navbar bg="primary">
+      <div>
         <Container>
-          <Navbar.Brand>
-            <Link to="/" className="navbar-brand">Lunch</Link>
-          </Navbar.Brand>
-          <Nav activeKey={location}>
-            <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/users">Users</Nav.Link>
-            <Nav.Link href="/registration">Registration</Nav.Link>
-            <Nav.Link href="/users/newOrder">New order</Nav.Link>
-            <Nav.Link href="/users/orderList">Order list</Nav.Link>
-            <Nav.Link href="/admin/newOrderAdmin">New order admin</Nav.Link>
-            <Nav.Link href="/admin/orderListAdmin">Order list admin</Nav.Link>
-            <Nav.Link href="/admin/reportAdmin">Report admin</Nav.Link>
-          </Nav>
+          <Navbar bg="primary">
+            <Col md={10} sm={10}>
+              <Navbar.Brand>
+                <Link to="/" className="navbar-brand">Lunch</Link>
+              </Navbar.Brand>
+            </Col>
+            <Col md={2} sm={2}>
+              <Nav activeKey={location}>
+                <Nav.Item>
+                  <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+                    <NavDropdown.Item href="/users">Profile page</NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item href="/users/newOrder">New order</NavDropdown.Item>
+                    <NavDropdown.Item href="/users/orderList">Order list</NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item href="/admin/newOrderAdmin">New order(admin)</NavDropdown.Item>
+                    <NavDropdown.Item href="/admin/orderListAdmin">Order list(admin)</NavDropdown.Item>
+                    <NavDropdown.Item href="/admin/reportAdmin">Report(admin)</NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item href="/">Login</NavDropdown.Item>
+                    <NavDropdown.Item href="/registration">Registration</NavDropdown.Item>
+                    <NavDropdown.Item href="/">Logout</NavDropdown.Item>
+                  </NavDropdown>
+                </Nav.Item>
+              </Nav>
+            </Col>
+          </Navbar>
         </Container>
-      </Navbar>
+      </div>
     );
   }
 }
