@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom';
-import Dropdown from 'react-bootstrap/Dropdown';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Container from 'react-bootstrap/Container';
+import NavDropdown from 'react-bootstrap/NavDropdown';
+import Col from 'react-bootstrap/Col';
 
 export default class Navigation extends Component {
   render() {
@@ -12,33 +13,31 @@ export default class Navigation extends Component {
       <div>
         <Container>
           <Navbar bg="primary">
-            <Navbar.Brand>
-              <Link to="/" className="navbar-brand">Lunch</Link>
-            </Navbar.Brand>
-            
-            <Nav flex="column sm-row" activeKey={location}>
-              <Nav.Item>
-                <Dropdown>
-                  <Dropdown.Toggle drop='left' id="dropdown-basic">
-                    Menu
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <Dropdown.Item href="/users">Profile page</Dropdown.Item>
-                    <Dropdown.Divider />
-                    <Dropdown.Item href="/users/newOrder">New order</Dropdown.Item>
-                    <Dropdown.Item href="/users/orderList">Order list</Dropdown.Item>
-                    <Dropdown.Divider />
-                    <Dropdown.Item href="/admin/newOrderAdmin">New order(admin)</Dropdown.Item>
-                    <Dropdown.Item href="/admin/orderListAdmin">Order list(admin)</Dropdown.Item>
-                    <Dropdown.Item href="/admin/reportAdmin">Report(admin)</Dropdown.Item>
-                    <Dropdown.Divider />
-                    <Dropdown.Item href="/">Login</Dropdown.Item>
-                    <Dropdown.Item href="/registration">Registration</Dropdown.Item>
-                    <Dropdown.Item href="/">Logout</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </Nav.Item>
-            </Nav>
+            <Col md={10} sm={10}>
+              <Navbar.Brand>
+                <Link to="/" className="navbar-brand">Lunch</Link>
+              </Navbar.Brand>
+            </Col>
+            <Col md={2} sm={2}>
+              <Nav activeKey={location}>
+                <Nav.Item>
+                  <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+                    <NavDropdown.Item href="/users">Profile page</NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item href="/users/newOrder">New order</NavDropdown.Item>
+                    <NavDropdown.Item href="/users/orderList">Order list</NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item href="/admin/newOrderAdmin">New order(admin)</NavDropdown.Item>
+                    <NavDropdown.Item href="/admin/orderListAdmin">Order list(admin)</NavDropdown.Item>
+                    <NavDropdown.Item href="/admin/reportAdmin">Report(admin)</NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item href="/">Login</NavDropdown.Item>
+                    <NavDropdown.Item href="/registration">Registration</NavDropdown.Item>
+                    <NavDropdown.Item href="/">Logout</NavDropdown.Item>
+                  </NavDropdown>
+                </Nav.Item>
+              </Nav>
+            </Col>
           </Navbar>
         </Container>
       </div>
