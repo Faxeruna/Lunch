@@ -20,7 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $mode = $_REQUEST['mode'];
 
     if ($mode == 'login') {
-        $token['id'] = 'dewd23e2d2d23d';
+        $token['id'] = 'dewd23e2d2d23d'; //token for frontend and api
+        $token['type'] = 'admin'; //admin or user
         var_dump($token);
         //echo(json_encode($token));
     }
