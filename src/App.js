@@ -26,7 +26,7 @@ class App extends Component {
         <Route exact path="/users/orderList" component={OrderList} />
         <Route exact path="/admin/newOrderAdmin" component={NewOrderAdmin} />
         <Route exact path="/admin/orderListAdmin" component={OrderListAdmin} />
-        <Route exact path="/admin/reportAdmin" component={ReportAdmin} />        
+        <Route exact path="/admin/reportAdmin" component={ReportAdmin} />
       </BrowserRouter>
     );
   }
