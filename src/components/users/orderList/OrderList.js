@@ -82,8 +82,9 @@ export default class HomePage extends Component{
       <Container>
         {/* Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop */}
         <Container>
-          <Row>
-            <Col xs={5} md={3}>
+          <Row className="border my-1 border-success">
+            <Col className="border" xs={5} md={3}>
+
               <ButtonGroup>
                 <DropdownButton as={ButtonGroup} title="Фильтр  " id="bg-nested-dropdown">
                   <Dropdown.Item eventKey="1">Дата</Dropdown.Item>
@@ -101,7 +102,7 @@ export default class HomePage extends Component{
               />
               <label htmlFor="inputFilter" className="sr-only">Фильтр</label>
             </Col>
-            <Col xs={4} md={2}>
+            <Col className="border" xs={4} md={2}>
               <button
                 className="btn btn-primary btn-block"
                 onClick={this.signIn}
@@ -120,7 +121,6 @@ export default class HomePage extends Component{
               <Table striped bordered hover size="sm" className="table-primary">
                 <thead>
                   <tr>
-                    <th>#</th>
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Username</th>
