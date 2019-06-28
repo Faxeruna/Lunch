@@ -4,59 +4,92 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Table from 'react-bootstrap/Table';
+import Accordion from 'react-bootstrap/Accordion';
+import Card from 'react-bootstrap/Card';
 
 export default class HomePage extends Component{
   render(){
     return (
-    <div id="newOrder">
+    
       <Container>
-      <div>
+      
         <Container>
           <Row className="border">
-            <Col className="border">Метка город</Col>
-            <Col className="border">Метка кабинет</Col>
-            <Col className="border">Метка логин</Col>
-            <Col>
-            <Button>Exit</Button>
+            <Col className="border">
+             <Accordion defaultActiveKey="0">
+                <Card>
+                  <Card.Header>
+                    <Accordion.Toggle as={Button} variant="link" eventKey="0">
+                      Кофе
+                    </Accordion.Toggle>
+                  </Card.Header>
+                  <Accordion.Collapse eventKey="0">
+                    <Card.Body>Черный</Card.Body>
+                  </Accordion.Collapse>
+                </Card>
+                <Card>
+                  <Card.Header>
+                    <Accordion.Toggle as={Button} variant="link" eventKey="1">
+                      Чай
+                    </Accordion.Toggle>
+                  </Card.Header>
+                  <Accordion.Collapse eventKey="1">
+                    <Card.Body>Гринфилд</Card.Body>
+                  </Accordion.Collapse>
+                </Card>
+                <Card>
+                  <Card.Header>
+                    <Accordion.Toggle as={Button} variant="link" eventKey="2">
+                      Сахар
+                    </Accordion.Toggle>
+                  </Card.Header>
+                  <Accordion.Collapse eventKey="2">
+                  <Card.Body>Сахар</Card.Body>
+                  </Accordion.Collapse>
+                </Card>
+           </Accordion>   
             </Col>
-          </Row>
+        
+                      <Col className="border">
+                      <div>
+                      <Container>
+                      <Row className="border">
+                        <Card bg="success" text="white" style={{ width: '18rem' }}>
+                                        <Card.Header>Заявка №</Card.Header>
+                                        <Card.Body>
+                                          <Card.Title>Состав заявки</Card.Title>
+                                            <Table striped bordered hover size="sm" className="table-primary">
+                                              <thead>
+                                                <tr>
+                                                  <th>#</th>
+                                                  <th>Позиция</th>
+                                                  <th>Количество</th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                               
+                                              </tbody>
+                                            </Table>
+                                        </Card.Body>
+                                      </Card>
+                      </Row>
+                      <Row className="border">
+                        
+                      </Row>
+                      <Button>Отправить заказ</Button>
+                      </Container>
+                      </div>
+                      </Col>
+            
+        </Row>
         </Container>      
-          <div>
-            <Table striped bordered hover size="sm">
-              <thead>
-              <tr>
-              <th>Товар</th>
-              <th>Количество</th>
-              <th>Заказано</th>
-              <th>Дата последнего заказа</th>
-              </tr>
-              </thead>
-                <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>Mark</td>
-                    <td>Otto</td>
-                    <td>@mdo</td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                    <td>@fat</td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td colSpan="2">Larry the Bird</td>
-                    <td>@twitter</td>
-                  </tr>
-                </tbody>
-            </Table> 
-          </div>          
-    </div> 
-    <Button>Отправить заказ</Button> 
+                   
+    
+     
     </Container>   
   
-    </div>
+   
     );
   }
 }
+

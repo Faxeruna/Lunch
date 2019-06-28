@@ -110,7 +110,7 @@ export default class HomePage extends Component{
                   </ButtonGroup>
                   <FormControl type="text" placeholder="Введите данные" className="mr-sm-2" />
                   <Button type="button" variant="success">Применить</Button>
-                  <Button type="button" className="mx-1" variant="warning">Создать заявку</Button>
+                  <Button href="/users/newOrder" type="button" className="mx-1" variant="warning">Создать заявку</Button>
                 </Form>
               </Navbar>
               <Container>
