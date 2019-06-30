@@ -11,17 +11,10 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import Card from 'react-bootstrap/Card';
 import Navbar from 'react-bootstrap/Navbar';
 import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
+//import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
-import Image from 'react-bootstrap/Image';
-
-//сверстать блок фильтра
-//сверстать таблицу заявок на динамическое заполнение
-//добавить в странице заявок кнопки редактировать и удалить(лучше маленьким карандашиком и крестиком)
-//активна только для state new, в остальных случаях должна быть неактивна или не показываться
-//подумать куда перенести кнопку создать заявку и ее стиль
-//пагинацию не трогать
+//import Image from 'react-bootstrap/Image';
 
 const ORDERCONTENT0 = [
   { name: "Кофе", kol: "31" },
