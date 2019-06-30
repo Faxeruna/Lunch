@@ -1,16 +1,11 @@
-import { connect } from "react-redux";
-import ContactPage from "./LoginPage";
+// import ContactPage from "./LoginPage";
+// import { connect } from "react-redux";
 
-const mapStateToProps = store => {
-  console.log(store);
-  return {
-    user: store.user
-  };
-};
+// const mapStateToProps = store => {
+//   console.log(store);
+//   return {
+//     store: store.user
+//   };
+// };
 
-const mapDispatchToProps = dispatch => ({});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ContactPage);
+// export default connect(mapStateToProps)(ContactPage);

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-
+import { setUser } from "../../actions/UserAction";
 class ContactPage extends Component {
   constructor(props) {
     super(props);
@@ -25,24 +25,25 @@ class ContactPage extends Component {
 
   signIn = event => {
     event.preventDefault();
-    const users = this.props.user;
-    let check = users.some(
-      index =>
-        this.state.email === index.email &&
-        this.state.password === index.password
-    );
 
-    if (this.state.email === "admin" && this.state.password === "secretKey") {
+    if (
+      this.state.email === "admin@list.ru" &&
+      this.state.password === "secretKey"
+    ) {
+      localStorage.removeItem("user");
+      localStorage.setItem("admin", "adminRoot");
       this.props.history.push("/admin/newOrderAdmin");
-      setTimeout(() => {
-        alert("Вы зашли за администратора");
-      }, 100);
-    } else if (check) {
+    } else if (
+      localStorage.getItem(this.state.email) != null &&
+      localStorage.getItem(this.state.email, this.state.password) ===
+        this.state.password
+    ) {
+      localStorage.removeItem("admin");
+      localStorage.setItem("user", "userRoot");
       this.props.history.push("/users/newOrder");
-      setTimeout(() => {
-        alert("Вы зашли за пользователя");
-      }, 100);
-    } else alert("Вы не зарегистрировались");
+    } else {
+      alert("Вы не зарегистрировались");
+    }
   };
 
   render() {
@@ -102,7 +103,11 @@ const mapStateToProps = store => {
   };
 };
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => {
+  return {
+    setUserAction: auth => dispatch(setUser(auth))
+  };
+};
 
 export default connect(
   mapStateToProps,

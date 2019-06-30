@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import { Route, BrowserRouter } from "react-router-dom";
+import PrivateAdmin from "./helpers/PrivateRoute";
+import PrivateUser from "./helpers/PrivateRoute2";
+import { connect } from "react-redux";
 //import logo from './logo.svg';
 import "./App.css";
 import "bootswatch/dist/minty/bootstrap.css";
@@ -20,15 +23,47 @@ class App extends Component {
         <Route path="/" component={Layout} />
         <Route exact path="/" component={LoginPage} />
         <Route exact path="/registration" component={RegistrationPage} />
-        <Route exact path="/users" component={UsersPage} />
-        <Route exact path="/users/newOrder" component={NewOrder} />
-        <Route exact path="/users/orderList" component={OrderList} />
-        <Route exact path="/admin/newOrderAdmin" component={NewOrderAdmin} />
-        <Route exact path="/admin/orderListAdmin" component={OrderListAdmin} />
-        <Route exact path="/admin/reportAdmin" component={ReportAdmin} />
+        <PrivateUser
+          exact
+          path="/users"
+          component={UsersPage}
+          auth={this.props.auth}
+        />
+        <PrivateUser
+          exact
+          path="/users/newOrder"
+          component={NewOrder}
+          auth={this.props.auth}
+        />
+        <PrivateUser
+          exact
+          path="/users/orderList"
+          component={OrderList}
+          auth={this.props.auth}
+        />
+        <PrivateAdmin
+          exact
+          path="/admin/newOrderAdmin"
+          component={NewOrderAdmin}
+          auth={this.props.auth}
+        />
+        <PrivateAdmin
+          exact
+          path="/admin/orderListAdmin"
+          component={OrderListAdmin}
+          auth={this.props.auth}
+        />
+        <PrivateAdmin
+          exact
+          path="/admin/reportAdmin"
+          component={ReportAdmin}
+          auth={this.props.auth}
+        />
       </BrowserRouter>
     );
   }
 }
 
-export default App;
+const mapStateToProps = store => ({ store: store.auth });
+
+export default connect(mapStateToProps)(App);
