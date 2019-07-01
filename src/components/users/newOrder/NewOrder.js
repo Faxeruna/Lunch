@@ -10,21 +10,44 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import axios from "axios";
 
-
+const new_order_const = [
+  { name: "0", count: "0" }
+];
 
 export default class HomePage extends Component{
   constructor(props) {
     super(props);
+    this.addItem = this.addItem.bind(this);
+    this.handleCountChange = this.handleCountChange.bind(this);
     this.state = {
       catalog: '',
-      new_order: ''
+      new_order: {},
+      count: {}
     };
+  }
+
+  handleCountChange(e){
+    var temp = this.state.count;
+    var id = e.target.id;
+    var value = e.target.value;
+    temp[id] = value;
+    this.setState({ count: temp });
+  }
+
+  addItem(product){
+    var temp_order = this.state.new_order;
+    var id_product = product.id_product;
+    var name = product.product;
+    var countProduct = this.state.count[product.id_product];
+    temp_order[id_product] = { name: name, count:countProduct };
+    this.setState({ new_order: temp_order });
+    console.log(this.state.new_order);
   }
 
   componentDidMount() {
     axios({
       method: 'post',
-      url: 'http://localhost/3/Lunch/api_lunch_system.php?mode=get_catalog',
+      url: 'http://localhost/Lunch/api_lunch_system.php?mode=get_catalog',
       data: {
         session_token: 'ccwe67fr6er76erfeyr'
       }
@@ -40,8 +63,11 @@ export default class HomePage extends Component{
 
   render(){
     const catalog = this.state.catalog;
+    var new_order_tr = new_order_const;
+    const new_order = this.state.new_order;
     if (!catalog) return <div>Loading</div>;
-    console.log(this.state.catalog);
+    if (new_order) new_order_tr = new_order;
+    //console.log(this.state.catalog);
     return (
       <Container>
         <Container>
@@ -65,21 +91,27 @@ export default class HomePage extends Component{
                             <Col>
                               <InputGroup size="sm" className="mb-1">
                                 <FormControl
-                                  placeholder="1"
+                                  id={item_product.id_product}
+                                  placeholder="0"
                                   aria-label="1"
                                   aria-describedby="basic-addon2"
+                                  onChange={this.handleCountChange}
                                 />
                                 <InputGroup.Append>
-                                  <Button variant="outline-secondary">Ok</Button>
+                                  <Button
+                                    onClick={this.addItem.bind(this, item_product)}
+                                  >
+                                    Ok
+                                  </Button>
                                 </InputGroup.Append>
                               </InputGroup>
                             </Col>
                           </Row>
-                        ))}  
+                        ))}
                       </Card.Body>
-                    </Accordion.Collapse> 
+                    </Accordion.Collapse>
                   </Card>
-                ))}             
+                ))}
               </Accordion>
             </Col>
             <Col className="border">
@@ -96,21 +128,13 @@ export default class HomePage extends Component{
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>#</td>
-                          <td>Позиция</td>
-                          <td>Количество</td>
-                        </tr>
-                        <tr>
-                          <td>#</td>
-                          <td>Позиция</td>
-                          <td>Количество</td>
-                        </tr> 
-                        <tr>
-                          <td>#</td>
-                          <td>Позиция</td>
-                          <td>Количество</td>
-                        </tr>                         
+                          {new_order_tr.map((item, index) => (
+                              <tr key={index}>
+                                <td>{index}</td>
+                                <td>{item.name}</td>
+                                <td>{item.count}</td>
+                              </tr>
+                          ))};
                       </tbody>
                     </Table>
                   </Row>
@@ -139,8 +163,8 @@ export default class HomePage extends Component{
               </div>
             </Col>
           </Row>
-        </Container>      
-      </Container>   
+        </Container>
+      </Container>
     );
   }
 }

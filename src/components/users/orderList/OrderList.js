@@ -70,15 +70,14 @@ const ORDER = [
 export default class HomePage extends Component{
   constructor() {
     super();
-    this.signIn = this.signIn.bind(this);
+    this.setItem = this.setItem.bind(this);
     this.state = {
       activeOrder: 1,
     };
   }
 
-  signIn(index){
+  setItem(index){
     this.setState({ activeOrder: index });
-    console.log(index );
   }
 
   render(){
@@ -91,10 +90,10 @@ export default class HomePage extends Component{
               <Navbar className="my-1 px-0">
                 <Form inline>
                   <ButtonGroup>
-                    <DropdownButton as={ButtonGroup} 
-                      title="Фильтр" 
-                      variant="success" 
-                      id="bg-nested-dropdown" 
+                    <DropdownButton as={ButtonGroup}
+                      title="Фильтр"
+                      variant="success"
+                      id="bg-nested-dropdown"
                       className="pr-1"
                     >
                       <Dropdown.Item eventKey="1">Дата</Dropdown.Item>
@@ -132,7 +131,12 @@ export default class HomePage extends Component{
                               <Button size="sm" variant="light" className="mr-1">
                                 <img src="http://s1.iconbird.com/ico/2013/1/569/w23h231389814869187pencil.png" />
                               </Button>
-                              <Button size="sm" variant="light"  className="mr-1" onClick={this.signIn.bind(this, index)}>
+                              <Button
+                                size="sm"
+                                variant="light"
+                                className="mr-1"
+                                onClick={this.setItem.bind(this, index)}
+                              >
                                 <img src="http://s1.iconbird.com/ico/2013/1/569/w24h16138981479612eye.png" />
                               </Button>
                               <Button size="sm" variant="light">

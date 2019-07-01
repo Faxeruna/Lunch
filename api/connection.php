@@ -1,5 +1,5 @@
 <?php
-$host = 'localhost'; // адрес сервера 
-$database = 'lunch'; // имя базы данных
+$host = 'localhost'; // адрес сервера
+$database = 'lunch_1'; // имя базы данных
 $user = 'root'; // имя пользователя
-$password = ''; // пароль
+$password = 'root'; // пароль
