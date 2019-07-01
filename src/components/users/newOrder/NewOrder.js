@@ -10,24 +10,33 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import axios from "axios";
 
-const new_order_const = [
-  { name: "0", count: "0" }
+const USER = [
+  { 
+    name: "Иван", 
+    id_user: "1",
+    id_location: "1", 
+    city: "Вашингтон",
+    location: "Приемная",
+    session_token: 'ccwe67fr6er76erfeyr',
+    type: "user"
+  }
 ];
 
 export default class HomePage extends Component{
   constructor(props) {
     super(props);
     this.addItem = this.addItem.bind(this);
+    this.createOrder = this.createOrder.bind(this);
     this.handleCountChange = this.handleCountChange.bind(this);
     this.state = {
       catalog: '',
       new_order: [],
-      count: []
+      count: [],
+      date: ''
     };
   }
 
   handleCountChange(e){
-    console.log(e.target.value);
     if (e.target.value) {
       var temp = this.state.count;
       var id = e.target.id;
@@ -45,33 +54,62 @@ export default class HomePage extends Component{
       var countProduct = this.state.count[product.id_product];
       temp_order[id_product] = { name: name, count:countProduct };
       this.setState({ new_order: temp_order });
-      console.log(this.state.new_order);
+    }
+  }
+
+  createOrder(e){
+    if (this.state.new_order) {
+      axios({
+        method: 'post',
+        url: 'http://localhost/3/Lunch/api_lunch_system.php?mode=create_order',
+        data: {
+          session_token: USER[0].session_token,
+          order_data: this.state.new_order,
+          user_data: USER[0],
+          date: this.state.date
+        }
+      })
+      .then(res => {
+        const status_order = res.data;
+        console.log(status_order);
+        if (status_order) {
+          alert("Заявка создана");
+        } else {
+          alert("Заявка не создана");
+        }
+        this.props.history.push("/users/orderList");
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     }
   }
 
   componentDidMount() {
     axios({
       method: 'post',
-      url: 'http://localhost/Lunch/api_lunch_system.php?mode=get_catalog',
+      url: 'http://localhost/3/Lunch/api_lunch_system.php?mode=get_catalog',
       data: {
         session_token: 'ccwe67fr6er76erfeyr'
       }
     })
     .then(res => {
-      const catalog= res.data;
-      this.setState({ catalog});
+      const catalog = res.data;
+      this.setState({ catalog });
     })
     .catch(function (error) {
       console.log(error);
     });
+    var dateNow = new Date();
+    var timeString = dateNow.getFullYear()+'-'+(dateNow.getMonth()+1<10?'0'+(dateNow.getMonth()+1):dateNow.getMonth()+1)+'-'+(dateNow.getDate()<10?'0'+dateNow.getDate():dateNow.getDate());
+    this.setState({ date: timeString});
   }
 
   render(){
     const catalog = this.state.catalog;
-    var new_order_tr = new_order_const;
     const new_order = this.state.new_order;
+    const date = this.state.date;
     if (!catalog) return <div>Loading</div>;
-    if (new_order) new_order_tr = new_order;
     return (
       <Container>
         <Container>
@@ -132,7 +170,7 @@ export default class HomePage extends Component{
                         </tr>
                       </thead>
                       <tbody>
-                          {new_order_tr.map((item, index) => (
+                          {new_order.map((item, index) => (
                               <tr key={index}>
                                 <td>{index}</td>
                                 <td>{item.name}</td>
@@ -143,6 +181,7 @@ export default class HomePage extends Component{
                     </Table>
                   </Row>
                 </Container>
+
               </div>
             </Col>
             <Col className="border">
@@ -153,15 +192,21 @@ export default class HomePage extends Component{
                       <Card.Header> <h4>Информация о заявке</h4> </Card.Header>
                       <Card.Body>
                         <Card.Title>Заявка: Новая</Card.Title>
-                        <Card.Title>Пользователь: Ваня</Card.Title>
-                        <Card.Title>Город: Сан-франциско</Card.Title>
-                        <Card.Title>Кабинет: 666</Card.Title>
-                        <Card.Title>Дата: 12.12.2012 </Card.Title>
+                        <Card.Title>Пользователь: {USER[0].name}</Card.Title>
+                        <Card.Title>Город: {USER[0].city}</Card.Title>
+                        <Card.Title>Кабинет: {USER[0].location}</Card.Title>
+                        <Card.Title>Дата: {date}</Card.Title>
                       </Card.Body>
                     </Card>
                   </Row>
                   <Row className="border my-2 px-0 float-right">
-                    <Button type="button" className="align-right" >Отправить заказ</Button>
+                    <Button 
+                      type="button" 
+                      onClick={this.createOrder} 
+                      className="align-right" 
+                    >
+                      Отправить заказ
+                    </Button>
                   </Row>
                 </Container>
               </div>

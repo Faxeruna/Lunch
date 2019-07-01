@@ -27,22 +27,32 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $mode = $_REQUEST['mode'];
 
     if ($mode == 'login') {
-        $catalog = fn_get_catalog($link);
+        //$catalog = fn_get_catalog($link);
         //echo(json_encode($catalog));
-        print_r($catalog);
-    } 
+        print_r(fn_login($link));
+    } elseif ($mode == 'registration') {
+
+    } elseif ($mode == 'logout') {
+
+    }
 //здесь проверка авторизационного токена
 
 
     if ($mode == 'get_catalog') { 
         $catalog = fn_get_catalog($link);
         print_r(json_encode($catalog));
-    } elseif ($mode == 'update_order') {
-
-    } elseif ($mode == 'search_order') { 
-
-    } elseif ($mode == 'create_user') { 
-
+    } elseif ($mode == 'create_order') {
+        $order_data = $post->order_data;
+        $user_data = $post->user_data;
+        $date = $post->date;
+        $status_order = fn_create_order($link, $order_data, $user_data, $date);
+        print_r($status_order);
+    } elseif ($mode == 'get_orders') { 
+        $token = $post->session_token;
+        $user_data = fn_get_user_data_by_token($link, $token);
+        $user_location = fn_get_user_location($link, $user_data);
+        $order_list = fn_get_order_list($link, $user_data, $user_location);
+        print_r(json_encode($order_list));
     } elseif ($mode == 'update_user') { 
 
     } elseif ($mode == 'search_user') { 

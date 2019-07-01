@@ -14,57 +14,18 @@ import Form from 'react-bootstrap/Form';
 //import InputGroup from 'react-bootstrap/InputGroup';
 import FormControl from 'react-bootstrap/FormControl';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
-//import Image from 'react-bootstrap/Image';
+import axios from "axios";
 
-const ORDERCONTENT0 = [
-  { name: "Кофе", kol: "31" },
-  { name: "Чай", kol: "21" },
-  { name: "Печенье", kol: "4" },
-  { name: "Зефир", kol: "3" },
-  { name: "Сахар", kol: "2" },
-];
-
-const ORDERCONTENT1 = [
-  { name: "Кофе1", kol: "31" },
-  { name: "Чай2", kol: "21" },
-  { name: "Печенье2", kol: "4" },
-  { name: "Зефир2", kol: "3" },
-  { name: "Сахар2", kol: "2" },
-];
-
-const ORDERCONTENT2 = [
-  { name: "Кофе2", kol: "31" },
-  { name: "Чай2", kol: "21" },
-  { name: "Печенье2", kol: "4" },
-  { name: "Зефир2", kol: "3" },
-  { name: "Сахар2", kol: "2" },
-];
-
-const ORDERCONTENT3 = [
-  { name: "Кофе3", kol: "31" },
-  { name: "Чай2", kol: "21" },
-  { name: "Печенье2", kol: "4" },
-  { name: "Зефир2", kol: "3" },
-  { name: "Сахар2", kol: "2" },
-];
-
-const ORDERCONTENT4 = [
-  { name: "Кофе4", kol: "31" },
-  { name: "Чай2", kol: "21" },
-  { name: "Печенье2", kol: "4" },
-  { name: "Зефир2", kol: "3" },
-  { name: "Сахар2", kol: "2" },
-];
-
-const ORDER = [
-  { id:"234", date: "10.10.2019", state: "new", city: "Москва", number: "201", ordercontent: ORDERCONTENT0 },
-  { id:"654", date: "04.10.2019", state: "new", city: "Ульяновск", number: "534", ordercontent: ORDERCONTENT1 },
-  { id:"45", date: "03.10.2019", state: "processing", city: "Москва", number: "101", ordercontent: ORDERCONTENT2 },
-  { id:"654", date: "22.10.2019", state: "done", city: "Вашингтон", number: "323", ordercontent: ORDERCONTENT3 },
-  { id:"665", date: "21.10.2019", state: "processing", city: "Москва", number: "323", ordercontent: ORDERCONTENT4 },
-  { id:"423", date: "31.10.2019", state: "done", city: "Вашингтон", number: "231", ordercontent: ORDERCONTENT0 },
-  { id:"32", date: "23.10.2019", state: "cancelled", city: "Ульяновск", number: "354", ordercontent: ORDERCONTENT1 },
-  { id:"4353", date: "17.10.2019", state: "done", city: "Москва", number: "402", ordercontent: ORDERCONTENT2 },
+const USER = [
+  { 
+    name: "Иван", 
+    id_user: "1",
+    id_location: "31", 
+    city: "Вашингтон",
+    location: "Приемная",
+    session_token: 'ccwe67fr6er76erfeyr',
+    type: "user"
+  }
 ];
 
 export default class HomePage extends Component{
@@ -72,7 +33,9 @@ export default class HomePage extends Component{
     super();
     this.setItem = this.setItem.bind(this);
     this.state = {
-      activeOrder: 1,
+      activeOrder: 0,
+      orders: ''
+
     };
   }
 
@@ -80,8 +43,30 @@ export default class HomePage extends Component{
     this.setState({ activeOrder: index });
   }
 
+  componentDidMount() {
+    axios({
+      method: 'post',
+      url: 'http://localhost/3/Lunch/api_lunch_system.php?mode=get_orders',
+      data: {
+        session_token: USER[0].session_token
+      }
+    })
+    .then(res => {
+      const orders = res.data;
+      this.setState({ orders });
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
   render(){
     const activeOrder = this.state.activeOrder;
+    const orders = this.state.orders;
+    if (!orders) {
+      return (<div>Loading</div>);
+    }
+    console.log(orders);
     return (
       <Container>
         <Container>
@@ -119,13 +104,13 @@ export default class HomePage extends Component{
                       </tr>
                     </thead>
                     <tbody>
-                      {ORDER.map((order, index) => (
+                      {orders.map((order, index) => (
                         <tr key={index}>
-                          <td>{order.id}</td>
+                          <td>{order.id_order}</td>
                           <td>{order.date}</td>
                           <td>{order.city}</td>
                           <td>{order.number}</td>
-                          <td>{order.state}</td>
+                          <td>{order.status}</td>
                           <td>
                             <ButtonToolbar>
                               <Button size="sm" variant="light" className="mr-1">
@@ -166,7 +151,7 @@ export default class HomePage extends Component{
             </Col>
             <Col className="my-1 mt-3 h-25" xs={6} md={4}>
               <Card bg="success" text="white" style={{ width: '18rem' }}>
-                <Card.Header>Заявка № {ORDER[activeOrder].id}</Card.Header>
+                <Card.Header>Заявка № {orders[activeOrder].id_order}</Card.Header>
                 <Card.Body>
                   <Card.Title>Состав заявки</Card.Title>
                     <Table striped bordered hover size="sm" className="table-primary">
@@ -178,11 +163,11 @@ export default class HomePage extends Component{
                         </tr>
                       </thead>
                       <tbody>
-                        {ORDER[activeOrder].ordercontent.map((product, index) => (
+                        {orders[activeOrder].ordercontent.map((product, index) => (
                           <tr key={index}>
                             <td>{index}</td>
                             <td>{product.name}</td>
-                            <td>{product.kol}</td>
+                            <td>{product.count}</td>
                           </tr>
                         ))}
                       </tbody>
