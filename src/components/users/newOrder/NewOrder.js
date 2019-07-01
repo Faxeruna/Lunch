@@ -21,27 +21,32 @@ export default class HomePage extends Component{
     this.handleCountChange = this.handleCountChange.bind(this);
     this.state = {
       catalog: '',
-      new_order: {},
-      count: {}
+      new_order: [],
+      count: []
     };
   }
 
   handleCountChange(e){
-    var temp = this.state.count;
-    var id = e.target.id;
-    var value = e.target.value;
-    temp[id] = value;
-    this.setState({ count: temp });
+    console.log(e.target.value);
+    if (e.target.value) {
+      var temp = this.state.count;
+      var id = e.target.id;
+      var value = e.target.value;
+      temp[id] = value;
+      this.setState({ count: temp });
+    };
   }
 
   addItem(product){
-    var temp_order = this.state.new_order;
-    var id_product = product.id_product;
-    var name = product.product;
-    var countProduct = this.state.count[product.id_product];
-    temp_order[id_product] = { name: name, count:countProduct };
-    this.setState({ new_order: temp_order });
-    console.log(this.state.new_order);
+    if (this.state.count[product.id_product]) {
+      var temp_order = this.state.new_order;
+      var id_product = product.id_product;
+      var name = product.product;
+      var countProduct = this.state.count[product.id_product];
+      temp_order[id_product] = { name: name, count:countProduct };
+      this.setState({ new_order: temp_order });
+      console.log(this.state.new_order);
+    }
   }
 
   componentDidMount() {
@@ -67,7 +72,6 @@ export default class HomePage extends Component{
     const new_order = this.state.new_order;
     if (!catalog) return <div>Loading</div>;
     if (new_order) new_order_tr = new_order;
-    //console.log(this.state.catalog);
     return (
       <Container>
         <Container>
@@ -134,7 +138,7 @@ export default class HomePage extends Component{
                                 <td>{item.name}</td>
                                 <td>{item.count}</td>
                               </tr>
-                          ))};
+                          ))}
                       </tbody>
                     </Table>
                   </Row>
