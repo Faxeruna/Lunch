@@ -17,7 +17,13 @@ class ContactPage extends Component {
     };
   }
 
+  handleChange = e => {
+    const { id, value } = e.currentTarget;
+    this.setState({ [id]: value });
+  };
+
   signIn = () => {
+    console.log("this state", this.state);
     axios({
       method: "post",
       url: "http://localhost/Lunch/api_lunch_system.php?mode=login",
@@ -26,10 +32,9 @@ class ContactPage extends Component {
         password: this.state.password
       }
     })
-      .then(function(response) {
-        //здесь надо установить токен авторизации в глобальный стейт
-        console.log(response);
-        //console.log(window);
+      .then(response => {
+        localStorage.setItem(this.state.authToken, "");
+        console.log(this.state);
         if (
           this.state.email === "admin@list.ru" &&
           this.state.password === "secretKey"
@@ -48,18 +53,11 @@ class ContactPage extends Component {
         } else {
           alert("Вы не зарегистрировались");
         }
+        console.log(response);
       })
       .catch(function(error) {
-        console.log("error", error);
+        console.log(error);
       });
-  };
-
-  handleEmailChange = e => {
-    this.setState({ email: e.target.value });
-  };
-
-  handlePasswordChange = e => {
-    this.setState({ password: e.target.value });
   };
 
   render() {
@@ -72,9 +70,10 @@ class ContactPage extends Component {
               <h2 className="form-signin-heading">Please sign in</h2>
 
               <input
+                value={this.state.email}
                 type="email"
-                onChange={this.handleEmailChange}
-                id="inputEmail"
+                onChange={this.handleChange}
+                id="email"
                 className="form-control"
                 placeholder="Email address"
                 required
@@ -85,9 +84,10 @@ class ContactPage extends Component {
               </label>
 
               <input
+                value={this.state.password}
                 type="password"
-                onChange={this.handlePasswordChange}
-                id="inputPassword"
+                onChange={this.handleChange}
+                id="password"
                 className="form-control"
                 placeholder="Password"
                 required
