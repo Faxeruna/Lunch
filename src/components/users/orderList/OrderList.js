@@ -23,7 +23,7 @@ const USER = [
     id_location: "31", 
     city: "Вашингтон",
     location: "Приемная",
-    session_token: 'ccwe67fr6er76erfeyr',
+    session_token: '7i5ptrc24ef8skod',
     type: "user"
   }
 ];
@@ -34,8 +34,8 @@ export default class HomePage extends Component{
     this.setItem = this.setItem.bind(this);
     this.state = {
       activeOrder: 0,
-      orders: ''
-
+      orders: '',
+      auth: true
     };
   }
 
@@ -52,8 +52,14 @@ export default class HomePage extends Component{
       }
     })
     .then(res => {
-      const orders = res.data;
-      this.setState({ orders });
+      if (res.data === 'denied') {
+        alert("Ошибка авторизации");
+        this.setState({ auth: 'false' });
+        this.props.history.push("/");
+      } else {
+        const orders = res.data; 
+        this.setState({ orders });
+      }
     })
     .catch(function (error) {
       console.log(error);

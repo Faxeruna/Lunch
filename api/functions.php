@@ -1,15 +1,18 @@
 <?php
 
-function fn_login($link)
+function fn_login($link, $email, $password)
 {
-    $token['id'] = 'dewd23e2d2d23d'; //token for frontend and api
-    $token['type'] = 'admin34'; //admin or user
-    var_dump($token);
-    $query ="SELECT * FROM users";
-    $result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link)); 
-    if($result) {
-        echo "Выполнение запроса прошло успешно";
-    }    
+    $result = 'bad';
+    $query ="SELECT * FROM users WHERE login = '$email' AND password = '$password'";
+    $_result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link)); 
+    while ($row_catalog = mysqli_fetch_array($_result, MYSQLI_ASSOC)) {
+        $result = $row_catalog;
+    }
+    if ($result !== 'bad') {
+        $result['password'] = '*';
+        $result['token'] = fn_start_session($link, $result['id']);
+    }   
+    return $result;
 }
 
 function fn_get_catalog($link)
@@ -155,6 +158,36 @@ function fn_get_product_name($link, $id_product)
     while ($row_catalog = mysqli_fetch_array($_product_name, MYSQLI_ASSOC)) {
         $product_name = $row_catalog;
         return $product_name['product'];
+    }
+    return $result;    
+}
+
+function fn_start_session($link, $user_id)
+{
+    $result = false;
+
+    if (!$user_id) {
+        return $result;
+    };
+    $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyz';
+    $token =  substr(str_shuffle($permitted_chars), 0, 16);
+    $date  = (new DateTime('+1 day'))->format('Y-m-d');
+    $query_create_session = "REPLACE INTO sessions (token, expire, user_id) values('$token', '$date', '$user_id')";
+    $_order = mysqli_query($link, $query_create_session) or die("Ошибка " . mysqli_error($link));
+    if ($_order) {
+        $result = $token;
+    };
+
+    return $result;    
+}
+
+function fn_check_session($link, $token)
+{
+    $result = false;
+    $query = "SELECT user_id FROM sessions WHERE token = '$token'";
+    $_user_id = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link));
+    while ($row_catalog = mysqli_fetch_array($_user_id, MYSQLI_ASSOC)) {
+        $result = true;
     }
     return $result;    
 }

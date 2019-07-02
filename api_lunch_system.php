@@ -27,16 +27,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $mode = $_REQUEST['mode'];
 
     if ($mode == 'login') {
-        //$catalog = fn_get_catalog($link);
-        //echo(json_encode($catalog));
-        print_r(fn_login($link));
+        if (!empty($post->email) && !empty($post->password)) {
+            print_r(fn_login($link, $post->email, $post->password));
+            mysqli_close($link);
+            exit;
+        } else {
+            print_r('empty');
+            mysqli_close($link);   
+            exit;
+        }
     } elseif ($mode == 'registration') {
 
     } elseif ($mode == 'logout') {
 
     }
-//здесь проверка авторизационного токена
 
+//начало проверки токена
+    if (!empty($post->session_token)) {
+        $result_check = fn_check_session($link, $post->session_token);
+        if (!$result_check) {
+            print_r('denied');
+            return;
+        }
+    } else {
+        print_r('denied');
+        return;
+    }
+//конец    
 
     if ($mode == 'get_catalog') { 
         $catalog = fn_get_catalog($link);

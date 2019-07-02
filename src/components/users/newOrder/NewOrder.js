@@ -17,7 +17,7 @@ const USER = [
     id_location: "1", 
     city: "Вашингтон",
     location: "Приемная",
-    session_token: 'ccwe67fr6er76erfeyr',
+    session_token: '7i5ptrc24ef8skod',
     type: "user"
   }
 ];
@@ -70,14 +70,20 @@ export default class HomePage extends Component{
         }
       })
       .then(res => {
-        const status_order = res.data;
-        console.log(status_order);
-        if (status_order) {
-          alert("Заявка создана");
+        if (res.data === 'denied') {
+          alert("Ошибка авторизации");
+          this.setState({ auth: 'false' });
+          this.props.history.push("/");
         } else {
-          alert("Заявка не создана");
+          const status_order = res.data;
+          console.log(status_order);
+          if (status_order) {
+            alert("Заявка создана");
+          } else {
+            alert("Заявка не создана");
+          }
+          this.props.history.push("/users/orderList");
         }
-        this.props.history.push("/users/orderList");
       })
       .catch(function (error) {
         console.log(error);
@@ -90,12 +96,17 @@ export default class HomePage extends Component{
       method: 'post',
       url: 'http://localhost/3/Lunch/api_lunch_system.php?mode=get_catalog',
       data: {
-        session_token: 'ccwe67fr6er76erfeyr'
+        session_token: USER[0].session_token
       }
     })
     .then(res => {
-      const catalog = res.data;
-      this.setState({ catalog });
+      if (res.data === 'denied') {
+        alert("Ошибка авторизации");
+        this.props.history.push("/");
+      } else {
+        const catalog = res.data;
+        this.setState({ catalog });
+      }
     })
     .catch(function (error) {
       console.log(error);
