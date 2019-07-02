@@ -5,7 +5,6 @@ import { Link } from "react-router-dom";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { setUser } from "../../actions/UserAction";
-import axios from "axios";
 
 class ContactPage extends Component {
   constructor(props) {
@@ -24,40 +23,27 @@ class ContactPage extends Component {
 
   signIn = () => {
     console.log("this state", this.state);
-    axios({
-      method: "post",
-      url: "http://localhost/Lunch/api_lunch_system.php?mode=login",
-      data: {
-        email: this.state.email,
-        password: this.state.password
-      }
-    })
-      .then(response => {
-        localStorage.setItem(this.state.authToken, "");
-        console.log(this.state);
-        if (
-          this.state.email === "admin@list.ru" &&
-          this.state.password === "secretKey"
-        ) {
-          localStorage.removeItem("user");
-          localStorage.setItem("admin", "adminRoot");
-          this.props.history.push("/admin/newOrderAdmin");
-        } else if (
-          localStorage.getItem(this.state.email) != null &&
-          localStorage.getItem(this.state.email, this.state.password) ===
-            this.state.password
-        ) {
-          localStorage.removeItem("admin");
-          localStorage.setItem("user", "userRoot");
-          this.props.history.push("/users/newOrder");
-        } else {
-          alert("Вы не зарегистрировались");
-        }
-        console.log(response);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
+
+    localStorage.setItem(this.state.authToken, "");
+    console.log(this.state);
+    if (
+      this.state.email === "admin@list.ru" &&
+      this.state.password === "secretKey"
+    ) {
+      localStorage.removeItem("user");
+      localStorage.setItem("admin", "adminRoot");
+      this.props.history.push("/admin/newOrderAdmin");
+    } else if (
+      localStorage.getItem(this.state.email) != null &&
+      localStorage.getItem(this.state.email, this.state.password) ===
+        this.state.password
+    ) {
+      localStorage.removeItem("admin");
+      localStorage.setItem("user", "userRoot");
+      this.props.history.push("/users/newOrder");
+    } else {
+      alert("Вы не зарегистрировались");
+    }
   };
 
   render() {
