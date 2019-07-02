@@ -23,7 +23,7 @@ class ContactPage extends Component {
 
   signIn = () => {
     console.log("this state", this.state);
-
+    console.log("yes");
     localStorage.setItem(this.state.authToken, "");
     console.log(this.state);
     if (
