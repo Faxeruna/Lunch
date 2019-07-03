@@ -28,6 +28,10 @@ const USER = [
   }
 ];
 
+const STATUS = {
+  new: "Новая"
+}
+
 class HomePage extends Component {
   constructor() {
     super();
@@ -71,7 +75,7 @@ class HomePage extends Component {
   componentDidMount() {
     axios({
       method: 'post',
-      url: 'http://localhost/3/Lunch/api_lunch_system.php?mode=get_orders',
+      url: 'http://localhost/4/Lunch/api_lunch_system.php?mode=get_orders',
       data: {
         session_token: USER[0].session_token
       }
@@ -110,13 +114,14 @@ class HomePage extends Component {
                       variant="success"
                       id="bg-nested-dropdown"
                       className="pr-1"
+                      disabled
                     >
                       <Dropdown.Item eventKey="1">Дата</Dropdown.Item>
                       <Dropdown.Item eventKey="2">Состояние</Dropdown.Item>
                     </DropdownButton>
                   </ButtonGroup>
-                  <FormControl type="text" placeholder="Введите данные" className="mr-sm-2" />
-                  <Button type="button" variant="success">Применить</Button>
+                  <FormControl type="text" placeholder="Введите данные" className="mr-sm-2" disabled />
+                  <Button type="button" variant="success" disabled>Применить</Button>
                   <Button href="/users/newOrder" type="button" className="ml-1 pb=2" variant="warning">Создать заявку</Button>
                 </Form>
               </Navbar>
@@ -140,7 +145,7 @@ class HomePage extends Component {
                           <td>{order.date}</td>
                           <td>{order.city}</td>
                           <td>{order.number}</td>
-                          <td>{order.status}</td>
+                          <td>{STATUS[order.status]}</td>
                           <td>
                             <ButtonToolbar>
                               <Button
@@ -176,7 +181,7 @@ class HomePage extends Component {
                       <tbody>
                         {orders[activeOrder].ordercontent.map((product, index) => (
                           <tr key={index}>
-                            <td>{index}</td>
+                            <td>{index+1}</td>
                             <td>{product.name}</td>
                             <td>{product.count}</td>
                           </tr>
