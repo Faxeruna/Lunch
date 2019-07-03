@@ -8,33 +8,45 @@ class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      inputEmail: "1",
-      inputPassword: "1",
-      inputPasswordRepeat: "1"
+      inputEmail: "",
+      inputPassword: "",
+      inputPasswordRepeat: "",
+      value: "Ульяновск",
+      cabinet: ""
     };
   }
 
   handleChange = e => {
+    e.preventDefault();
     const { id, value } = e.currentTarget;
     this.setState({ [id]: value });
   };
 
-  signUp = () => {
+  handleSubmit(event) {
+    alert("Your favorite flavor is: " + this.state.value);
+    event.preventDefault();
+  }
+
+  signUp = e => {
+    e.preventDefault();
+    localStorage.setItem("City", this.state.value);
+    localStorage.setItem("Cabinet", this.state.cabinet);
     function validateEmail(email) {
       var res = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return res.test(String(email).toLowerCase());
     }
     const { inputEmail, inputPassword, inputPasswordRepeat } = this.state;
-    const { user } = this.props;
+    // const { user } = this.props;
     if (
       inputEmail.trim() &&
       inputPassword.trim() === inputPasswordRepeat.trim() &&
       validateEmail(inputEmail) === true &&
       localStorage.getItem(inputEmail, inputPassword) === null
     ) {
-      console.log(user);
+      // console.log(user);
       this.props.user.push(localStorage.setItem(inputEmail, inputPassword));
-      console.log(user);
+      // console.log(user);
+      this.props.history.push("/");
     } else if (validateEmail(inputEmail) === false) {
       alert("домен почты указан неверно");
     } else if (inputPassword.trim() !== inputPasswordRepeat.trim()) {
@@ -87,6 +99,33 @@ class HomePage extends Component {
               <label htmlFor="inputPasswordRepeat" className="sr-only">
                 Repeat Password
               </label>
+            </form>
+            <form>
+              <label>
+                Укажите Город
+                <select
+                  value={this.state.value}
+                  onChange={this.handleChange}
+                  className="form-control"
+                >
+                  <option value="Москва">Москва</option>
+                  <option value="Ульяновск">Ульяновск</option>
+                  <option value="Вашингтон">Вашингтон</option>
+                </select>
+              </label>
+              <label>
+                Укажите Кабинет
+                <input
+                  min="0"
+                  type="number"
+                  placeholder="от 1 до 300, без букв"
+                  className="form-control"
+                  id="cabinet"
+                  value={this.state.cabinet}
+                  onChange={this.handleChange}
+                />
+              </label>
+
               <button
                 className="btn btn-lg btn-primary btn-block"
                 onClick={this.signUp}

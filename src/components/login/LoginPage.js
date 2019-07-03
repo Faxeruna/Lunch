@@ -17,30 +17,30 @@ class ContactPage extends Component {
   }
 
   handleChange = e => {
+    e.preventDefault();
     const { id, value } = e.currentTarget;
     this.setState({ [id]: value });
   };
 
   signIn = () => {
-    console.log("this state", this.state);
-    console.log("yes");
     localStorage.setItem(this.state.authToken, "");
-    console.log(this.state);
     if (
       this.state.email === "admin@list.ru" &&
       this.state.password === "secretKey"
     ) {
+      localStorage.setItem("Current", this.state.email);
       localStorage.removeItem("user");
       localStorage.setItem("admin", "adminRoot");
-      this.props.history.push("/admin/newOrderAdmin");
+      this.props.history.push("/admin/orderListAdmin");
     } else if (
       localStorage.getItem(this.state.email) != null &&
       localStorage.getItem(this.state.email, this.state.password) ===
         this.state.password
     ) {
+      localStorage.setItem("Current", this.state.email);
       localStorage.removeItem("admin");
       localStorage.setItem("user", "userRoot");
-      this.props.history.push("/users/newOrder");
+      this.props.history.push("/users/orderList");
     } else {
       alert("Вы не зарегистрировались");
     }
