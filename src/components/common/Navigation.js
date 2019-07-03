@@ -15,13 +15,18 @@ export default class Navigation extends Component {
           <Navbar bg="primary">
             <Col md={10} sm={10}>
               <Navbar.Brand>
-                <Link to="/" className="navbar-brand">Lunch</Link>
+                <Link to="/" className="navbar-brand"><h2><b>Ланч</b></h2></Link>
+                  <small>
+                    Привет {localStorage.getItem("Current")} ваш Город{" "}
+                    {localStorage.getItem("City")}, ваш Кабинет{" "}
+                    {localStorage.getItem("Cabinet")}
+                  </small>
               </Navbar.Brand>
             </Col>
             <Col md={2} sm={2}>
               <Nav activeKey={location}>
                 <Nav.Item>
-                  <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+                  <NavDropdown title="Меню" id="basic-nav-dropdown">
                     <NavDropdown.Item href="/users">Profile page</NavDropdown.Item>
                     <NavDropdown.Divider />
                     <NavDropdown.Item href="/users/newOrder">New order</NavDropdown.Item>

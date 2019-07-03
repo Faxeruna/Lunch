@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { setUser } from "../../actions/UserAction";
+//import axios from "axios";
 
 class ContactPage extends Component {
   constructor(props) {
@@ -99,7 +100,7 @@ class ContactPage extends Component {
 }
 
 const mapStateToProps = store => {
-  console.log(store);
+  //console.log(store);
   return {
     user: store.user
   };
