@@ -2,4 +2,4 @@
 $host = 'localhost'; // адрес сервера
 $database = 'lunch'; // имя базы данных
 $user = 'root'; // имя пользователя
-$password = 'root'; // пароль
+$password = ''; // пароль
