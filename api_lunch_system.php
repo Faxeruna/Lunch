@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     };
 }
 
-$link = mysqli_connect($host, $user, $password, $database) 
+$link = mysqli_connect($host, $user, $password, $database)
     or die("Ошибка " . mysqli_error($link));
 mysqli_set_charset($link, "utf8");
 
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit;
         } else {
             print_r('empty');
-            mysqli_close($link);   
+            mysqli_close($link);
             exit;
         }
     } elseif ($mode == 'registration') {
@@ -53,10 +53,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         print_r('denied');
         return;
     }
-//конец    
+//конец
 
-    if ($mode == 'get_catalog') { 
-        $catalog = fn_get_catalog($link);
+    if ($mode == 'get_catalog') {
+        $token = $post->session_token;
+        $user_data = fn_get_user_data_by_token($link, $token);
+        $user_location = fn_get_user_location($link, $user_data);
+        $catalog = fn_get_catalog($link, $user_location);
         print_r(json_encode($catalog));
     } elseif ($mode == 'create_order') {
         $order_data = $post->order_data;
@@ -64,15 +67,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $date = $post->date;
         $status_order = fn_create_order($link, $order_data, $user_data, $date);
         print_r($status_order);
-    } elseif ($mode == 'get_orders') { 
+    } elseif ($mode == 'get_orders') {
         $token = $post->session_token;
         $user_data = fn_get_user_data_by_token($link, $token);
         $user_location = fn_get_user_location($link, $user_data);
         $order_list = fn_get_order_list($link, $user_data, $user_location);
         print_r(json_encode($order_list));
-    } elseif ($mode == 'update_user') { 
+    } elseif ($mode == 'update_user') {
 
-    } elseif ($mode == 'search_user') { 
+    } elseif ($mode == 'search_user') {
 
     }
 }

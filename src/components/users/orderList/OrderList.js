@@ -17,13 +17,13 @@ import { setRemove } from "../../../actions/RemoveItem";
 import axios from "axios";
 
 const USER = [
-  { 
-    name: "Иван", 
+  {
+    name: "Иван",
     id_user: "1",
-    id_location: "1", 
+    id_location: "1",
     city: "Вашингтон",
     location: "Приемная",
-    session_token: '8yths104fk9uzr62',
+    session_token: 'ccwe67fr6er76erfeyr',
     type: "user"
   }
 ];
@@ -75,7 +75,7 @@ class HomePage extends Component {
   componentDidMount() {
     axios({
       method: 'post',
-      url: 'http://localhost/4/Lunch/api_lunch_system.php?mode=get_orders',
+      url: 'http://localhost/Lunch/api_lunch_system.php?mode=get_orders',
       data: {
         session_token: USER[0].session_token
       }
@@ -86,7 +86,7 @@ class HomePage extends Component {
         this.setState({ auth: 'false' });
         this.props.history.push("/");
       } else {
-        const orders = res.data; 
+        const orders = res.data;
         this.setState({ orders });
       }
     })

@@ -4,20 +4,21 @@ function fn_login($link, $email, $password)
 {
     $result = 'bad';
     $query ="SELECT * FROM users WHERE login = '$email' AND password = '$password'";
-    $_result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link)); 
+    $_result = mysqli_query($link, $query) or die("Ошибка " . mysqli_error($link));
     while ($row_catalog = mysqli_fetch_array($_result, MYSQLI_ASSOC)) {
         $result = $row_catalog;
     }
     if ($result !== 'bad') {
         $result['password'] = '*';
         $result['token'] = fn_start_session($link, $result['id']);
-    }   
+    }
     return $result;
 }
 
-function fn_get_catalog($link)
+function fn_get_catalog($link, $user_location)
 {
     $result = false;
+    $id_location = $user_location['id_location'];
     $query_catalog ="SELECT id_category as id_category, name as name FROM categories";
     $_catalog = mysqli_query($link, $query_catalog) or die("Ошибка " . mysqli_error($link));
     while ($row_catalog = mysqli_fetch_array($_catalog, MYSQLI_ASSOC)) {
@@ -27,6 +28,13 @@ function fn_get_catalog($link)
     foreach ($catalogs as &$catalog) {
         $product = array();
         $id_category = $catalog['id_category'];
+
+        $query_limit ="SELECT count FROM limits WHERE id_category = '$id_category' AND id_location = '$id_location'";
+        $_limit = mysqli_query($link, $query_limit) or die("Ошибка " . mysqli_error($link));
+        while ($row_catalog_limit = mysqli_fetch_array($_limit, MYSQLI_ASSOC)) {
+            $catalog['count'] = $row_catalog_limit['count'];
+        }
+
         $query_product ="SELECT * FROM products WHERE id_category = '$id_category'";
         $_product = mysqli_query($link, $query_product) or die("Ошибка " . mysqli_error($link));
         while ($row_product = mysqli_fetch_array($_product, MYSQLI_ASSOC)) {
@@ -34,11 +42,11 @@ function fn_get_catalog($link)
         }
         if ($product) {
             $catalog['products'] = $product;
-            $finaly_catalog[] = $catalog;          
+            $finaly_catalog[] = $catalog;
         }
     }
 
-    return $finaly_catalog;    
+    return $finaly_catalog;
 }
 
 function fn_create_order($link, $order_data, $user_data, $date)
@@ -62,7 +70,7 @@ function fn_create_order($link, $order_data, $user_data, $date)
         }
     };
 
-    return $result;    
+    return $result;
 }
 
 function fn_get_user_data_by_token($link, $token)
@@ -76,7 +84,7 @@ function fn_get_user_data_by_token($link, $token)
         return $user_data;
     }
 
-    return $result;    
+    return $result;
 }
 
 function fn_get_user_location($link, $user_data)
@@ -90,7 +98,7 @@ function fn_get_user_location($link, $user_data)
         return $user_location;
     }
 
-    return $result;    
+    return $result;
 }
 
 function fn_get_order_list($link, $user_data, $user_location)
@@ -105,11 +113,11 @@ function fn_get_order_list($link, $user_data, $user_location)
         $_row_catalog['city'] = $location_data['city'];
         $_row_catalog['number'] = $location_data['location_name'];
         $order_detail = fn_get_order_detail($link, $_row_catalog['id_order']);
-        $_row_catalog['ordercontent'] = $order_detail;        
+        $_row_catalog['ordercontent'] = $order_detail;
         $list_orders[] = $_row_catalog;
     }
     return $list_orders;
-    return $result;    
+    return $result;
 }
 
 function fn_get_location_by_id($link, $id_location)
@@ -130,7 +138,7 @@ function fn_get_location_by_id($link, $id_location)
         return $location;
     }
 
-    return $result;    
+    return $result;
 }
 
 function fn_get_order_detail($link, $id_order)
@@ -147,7 +155,7 @@ function fn_get_order_detail($link, $id_order)
     if ($order_detail) {
         return $order_detail;
     };
-    return $result;    
+    return $result;
 }
 
 function fn_get_product_name($link, $id_product)
@@ -159,7 +167,7 @@ function fn_get_product_name($link, $id_product)
         $product_name = $row_catalog;
         return $product_name['product'];
     }
-    return $result;    
+    return $result;
 }
 
 function fn_start_session($link, $user_id)
@@ -178,7 +186,7 @@ function fn_start_session($link, $user_id)
         $result = $token;
     };
 
-    return $result;    
+    return $result;
 }
 
 function fn_check_session($link, $token)
@@ -189,5 +197,5 @@ function fn_check_session($link, $token)
     while ($row_catalog = mysqli_fetch_array($_user_id, MYSQLI_ASSOC)) {
         $result = true;
     }
-    return $result;    
+    return $result;
 }

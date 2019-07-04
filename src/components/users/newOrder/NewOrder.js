@@ -11,13 +11,13 @@ import FormControl from 'react-bootstrap/FormControl';
 import axios from "axios";
 
 const USER = [
-  { 
-    name: "Иван", 
+  {
+    name: "Иван",
     id_user: "1",
-    id_location: "1", 
+    id_location: "1",
     city: "Вашингтон",
     location: "Приемная",
-    session_token: '8yths104fk9uzr62',
+    session_token: 'ccwe67fr6er76erfeyr',
     type: "user"
   }
 ];
@@ -61,7 +61,7 @@ export default class HomePage extends Component{
     if (this.state.new_order) {
       axios({
         method: 'post',
-        url: 'http://localhost/3/Lunch/api_lunch_system.php?mode=create_order',
+        url: 'http://localhost/Lunch/api_lunch_system.php?mode=create_order',
         data: {
           session_token: USER[0].session_token,
           order_data: this.state.new_order,
@@ -94,7 +94,7 @@ export default class HomePage extends Component{
   componentDidMount() {
     axios({
       method: 'post',
-      url: 'http://localhost/4/Lunch/api_lunch_system.php?mode=get_catalog',
+      url: 'http://localhost/Lunch/api_lunch_system.php?mode=get_catalog',
       data: {
         session_token: USER[0].session_token
       }
@@ -126,9 +126,9 @@ export default class HomePage extends Component{
         <Container>
           <Row>
             <Col>
-             <Accordion 
-              size="sm" 
-              className="my-2 px-0" 
+             <Accordion
+              size="sm"
+              className="my-2 px-0"
               defaultActiveKey="0"
             >
                 {catalog.map((item_catalog, index) => (
@@ -216,9 +216,9 @@ export default class HomePage extends Component{
                   </Row>
                   <Row className="border my-2 px-0 float-right">
                     <Button
-                      type="button" 
-                      onClick={this.createOrder} 
-                      className="align-right" 
+                      type="button"
+                      onClick={this.createOrder}
+                      className="align-right"
                       variant="warning"
                     >
                       Отправить заказ
