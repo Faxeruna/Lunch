@@ -64,8 +64,10 @@ function fn_create_order($link, $order_data, $user_data, $date)
         $id_order = mysqli_insert_id($link);
         foreach ($order_data as $key => $item) {
             if ($item) {
-                $query_create_detail = "INSERT INTO order_details (id_order, id_product, count) values('$id_order', '$key', '$item->count')";
-                $detail = mysqli_query($link, $query_create_detail) or die("Ошибка " . mysqli_error($link));
+                if ($item->count > 0) {
+                    $query_create_detail = "INSERT INTO order_details (id_order, id_product, count) values('$id_order', '$key', '$item->count')";
+                    $detail = mysqli_query($link, $query_create_detail) or die("Ошибка " . mysqli_error($link));
+                }
             }
         }
     };

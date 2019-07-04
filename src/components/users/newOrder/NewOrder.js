@@ -46,14 +46,47 @@ export default class HomePage extends Component{
     };
   }
 
-  addItem(product){
+  addItem(product, limit_catalog){
     if (this.state.count[product.id_product]) {
       var temp_order = this.state.new_order;
       var id_product = product.id_product;
       var name = product.product;
-      var countProduct = this.state.count[product.id_product];
-      temp_order[id_product] = { name: name, count:countProduct };
-      this.setState({ new_order: temp_order });
+      var id_category = product['id_category'];
+
+      if (temp_order[id_product] && temp_order[id_product].count) {
+        var countProduct = Number(temp_order[id_product].count) + Number(this.state.count[product.id_product]);
+      } else {
+        var countProduct = this.state.count[product.id_product];
+      }
+      if (countProduct >= 0 ) {
+
+        if (!limit_catalog) {
+          temp_order[id_product] = { name: name, count: countProduct, id_category: id_category };
+          this.setState({ new_order: temp_order });
+        } else if (temp_order.length === 0){
+          if (countProduct > limit_catalog) {
+            alert('Вы превысили лимит. Введите количество в соответствии с лимитом.');
+          } else {
+            temp_order[id_product] = { name: name, count: countProduct, id_category: id_category };
+            this.setState({ new_order: temp_order });
+          }
+        } else {
+          var balance_limit = limit_catalog;
+          temp_order.map((item_order, index) => {
+            if (item_order.id_category === id_category) {
+              balance_limit = balance_limit - item_order.count;
+            }
+          })
+          if (this.state.count[product.id_product] > balance_limit) {
+            alert('Вы превысили лимит. Остаток лимита: ' + balance_limit);
+          } else {
+            temp_order[id_product] = { name: name, count: countProduct, id_category: id_category };
+            this.setState({ new_order: temp_order });
+          }
+        }
+      } else {
+        alert('Заказ не может быть отрицательным.');
+      }
     }
   }
 
@@ -135,7 +168,7 @@ export default class HomePage extends Component{
                   <Card bg="link" style={{ width: '22rem' } } key={index}>
                     <Card.Header>
                       <Accordion.Toggle as={Button} variant="link" eventKey={index}>
-                        <b>{item_catalog.name}</b> Лимит: {item_catalog.count}
+                        <b>{item_catalog.name}</b> Общий лимит: {item_catalog.count ? item_catalog.count : 'Неогр.'}
                       </Accordion.Toggle>
                     </Card.Header>
                     <Accordion.Collapse eventKey={index}>
@@ -148,6 +181,7 @@ export default class HomePage extends Component{
                             <Col>
                               <InputGroup size="sm" className="mb-1">
                                 <FormControl
+                                  type="number"
                                   id={item_product.id_product}
                                   placeholder="0"
                                   aria-label="1"
@@ -156,7 +190,7 @@ export default class HomePage extends Component{
                                 />
                                 <InputGroup.Append>
                                   <Button
-                                    onClick={this.addItem.bind(this, item_product)}
+                                    onClick={this.addItem.bind(this, item_product, catalog[index].count)}
                                   >
                                     Ok
                                   </Button>
@@ -181,7 +215,7 @@ export default class HomePage extends Component{
                         <tr>
                           <th>№</th>
                           <th>Позиция</th>
-                          <th>Количество</th>
+                          <th>Кол-во</th>
                         </tr>
                       </thead>
                       <tbody>
