@@ -135,7 +135,7 @@ export default class HomePage extends Component{
                   <Card bg="link" style={{ width: '22rem' } } key={index}>
                     <Card.Header>
                       <Accordion.Toggle as={Button} variant="link" eventKey={index}>
-                        {item_catalog.name}
+                        <b>{item_catalog.name}</b> Лимит: {item_catalog.count}
                       </Accordion.Toggle>
                     </Card.Header>
                     <Accordion.Collapse eventKey={index}>
