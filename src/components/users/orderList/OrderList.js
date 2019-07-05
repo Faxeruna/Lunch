@@ -48,7 +48,7 @@ export default class HomePage extends Component {
   componentDidMount() {
     axios({
       method: "post",
-      url: "https://simbirsoftlearning.herokuapp.com/api_lunch_system.php?mode=get_orders",
+      url: "https://simbirsoftlearning.cleverapps.io/api_lunch_system.php?mode=get_orders",
       data: {
         session_token: "ccwe67fr6er76erfeyr"
       }
