@@ -118,7 +118,7 @@ export default class HomePage extends Component {
     if (this.state.new_order) {
       axios({
         method: "post",
-        url: "/api_lunch_system.php?mode=create_order",
+        url: "https://simbirsoftlearning.herokuapp.com/api_lunch_system.php?mode=create_order",
         data: {
           session_token: USER[0].session_token,
           order_data: this.state.new_order,
@@ -151,7 +151,7 @@ export default class HomePage extends Component {
   componentDidMount() {
     axios({
       method: "post",
-      url: "/api_lunch_system.php?mode=get_catalog",
+      url: "https://simbirsoftlearning.herokuapp.com/api_lunch_system.php?mode=get_catalog",
       data: {
         session_token: USER[0].session_token
       }
