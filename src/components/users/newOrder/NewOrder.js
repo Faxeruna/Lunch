@@ -118,7 +118,7 @@ export default class HomePage extends Component {
     if (this.state.new_order) {
       axios({
         method: "post",
-        url: "http://localhost/Lunch/api_lunch_system.php?mode=create_order",
+        url: "/api_lunch_system.php?mode=create_order",
         data: {
           session_token: USER[0].session_token,
           order_data: this.state.new_order,
@@ -142,7 +142,7 @@ export default class HomePage extends Component {
             this.props.history.push("/users/orderList");
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     }
@@ -151,7 +151,7 @@ export default class HomePage extends Component {
   componentDidMount() {
     axios({
       method: "post",
-      url: "http://localhost/Lunch/api_lunch_system.php?mode=get_catalog",
+      url: "/api_lunch_system.php?mode=get_catalog",
       data: {
         session_token: USER[0].session_token
       }
@@ -165,7 +165,7 @@ export default class HomePage extends Component {
           this.setState({ catalog });
         }
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
     var dateNow = new Date();
@@ -268,7 +268,7 @@ export default class HomePage extends Component {
                             <td>
                               <button
                                 onClick={this.handleDelete.bind(this, item)}
-                                className="btn btn-danger btn-sm float-right"
+                                className="btn btn-primary btn-sm float-right"
                               >
                                 Удалить
                               </button>

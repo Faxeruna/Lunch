@@ -48,7 +48,7 @@ export default class HomePage extends Component {
   componentDidMount() {
     axios({
       method: "post",
-      url: "http://localhost/Lunch/api_lunch_system.php?mode=get_orders",
+      url: "/api_lunch_system.php?mode=get_orders",
       data: {
         session_token: "ccwe67fr6er76erfeyr"
       }
@@ -63,7 +63,7 @@ export default class HomePage extends Component {
           this.setState({ orders });
         }
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
   }
